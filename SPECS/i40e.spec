@@ -1,9 +1,9 @@
 %define uname  %{kernel_version}
 %define module_dir updates
 
-Summary: Driver for hello-world
-Name: hello-world
-Version: 1.0
+Summary: Driver for i40e
+Name: i40e
+Version: 2.7.29
 Release: %{?release}%{!?release:1}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -15,16 +15,16 @@ Requires(post): /usr/sbin/depmod
 Requires(postun): /usr/sbin/depmod
 
 %description
-hello-world Linux Device Driver source.
+i40e Linux Device Driver source.
 
 %prep
 %setup -q -n %{name}-%{version}
 
 %build
-%{__make} -C /lib/modules/%{uname}/build M=$(pwd) modules
+%{__make} -C /lib/modules/%{uname}/build M=$(pwd)/src modules
 
 %install
-%{__make} -C /lib/modules/%{uname}/build M=$(pwd) INSTALL_MOD_PATH=%{buildroot} INSTALL_MOD_DIR=%{module_dir} DEPMOD=/bin/true modules_install
+%{__make} -C /lib/modules/%{uname}/build M=$(pwd)/src INSTALL_MOD_PATH=%{buildroot} INSTALL_MOD_DIR=%{module_dir} DEPMOD=/bin/true modules_install
 
 # remove extra files modules_install copies in
 rm -f %{buildroot}/lib/modules/%{uname}/modules.*
@@ -49,5 +49,5 @@ find %{buildroot}/lib/modules/%{uname} -name "*.ko" -type f | xargs chmod u+x
 %doc
 
 %changelog
-* Sat Jan 26 2019 Rushikesh Jadhav <rushikesh7@gmail.com> - 1.0
-- Added example driver hello-world-1.0
+* Sat Jan 26 2019 Rushikesh Jadhav <rushikesh7@gmail.com> - 2.7.29
+- Added example driver i40e-2.7.29
